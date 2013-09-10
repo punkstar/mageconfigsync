@@ -1,6 +1,7 @@
 {
     "require": {
-        "symfony/console": "v2.3.4"
+        "symfony/console": "v2.3.4",
+        "symfony/yaml": "v2.3.4"
     },
 
     "require-dev": {

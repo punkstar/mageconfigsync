@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Dumper;
 
 class DumpCommand extends Command
 {
@@ -37,12 +38,22 @@ class DumpCommand extends Command
         $magento = new Magento($input->getOption('magento-root'));
         $config = new Configuration($magento);
 
+        $data_structure = array();
+
         foreach ($config->getAllValues() as $row) {
-            foreach (array_keys($row) as $idx) {
-                $row[$idx] = str_replace("\n", '\n', $row[$idx]);
+
+            $scope = $row['scope'];
+            $path  = $row['path'];
+            $value = $row['value'];
+
+            if (!isset($data_structure[$scope])) {
+                $data_structure[$scope] = array();
             }
 
-            echo join(",", $row) . "\n";
+            $data_structure[$scope][$path] = $value;
         }
+
+        $dumper = new Dumper();
+        echo $dumper->dump($data_structure, 2);
     }
 }
