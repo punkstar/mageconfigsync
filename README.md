@@ -1,14 +1,35 @@
 # Mage Config Sync
 
-**Note: This tool is a work in progress and should not be used in production systems**
-
 This is a tool designed to allow teams to keep Magento configuration under version control, eliminating the unknown when tracking down potentially configuration related bugs.
 
 ![image](http://up.nicksays.co.uk/image/3J3n461U1E35/Screen%20Shot%202013-09-11%20at%2018.47.10.png)
 
 ## File Syntax
 
-The configuration values are stored in a YAML file.
+The configuration values are stored in a YAML file.  The format of the file is as follows:
+
+    environment:
+        scope_key:
+           path: value
+
+For example:
+
+    production:
+        default:
+            dev/debug/template_hints: 0
+    development:
+        default:
+            dev/debug/template_hints: 1
+        stores-1:
+            currency/options/base: GBP
+
+The above will disable template hints on product, enable template hints on the development environment and set the currency to Pounds Sterling in the store scope for the store with ID #1.
+
+Valid scope keys are:
+
+* default
+* stores-`$id`
+* websites-`$id`
 
 ## Usage
 
