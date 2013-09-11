@@ -26,14 +26,17 @@ class ConfigYaml
         foreach ($config_adapter->getAllValues() as $row) {
 
             $scope = $row['scope'];
+            $scope_id = $row['scope_id'];
             $path  = $row['path'];
             $value = $row['value'];
 
-            if (!isset($data_structure[$scope])) {
-                $data_structure[$scope] = array();
+            $scope_key = self::buildScopeKey($scope, $scope_id);
+
+            if (!isset($data_structure[$scope_key])) {
+                $data_structure[$scope_key] = array();
             }
 
-            $data_structure[$scope][$path] = $value;
+            $data_structure[$scope_key][$path] = $value;
         }
 
         return new ConfigYaml($data_structure, $environment);
@@ -54,17 +57,30 @@ class ConfigYaml
 
     public function getData()
     {
-        return $this->_raw_data;
+        if ($this->_environment) {
+            return $this->_raw_data[$this->_environment];
+        } else {
+            return $this->_raw_data;
+        }
     }
 
     /**
+     * @param bool $forced_environment
      * @return array
      */
-    public function toArray()
+    public function toArray($forced_environment = false)
     {
-        if ($this->_environment) {
+        if ($forced_environment) {
+            $environment = $forced_environment;
+        } else if ($this->_environment) {
+            $environment = $this->_environment;
+        } else {
+            $environment = false;
+        }
+
+        if ($environment) {
             return array(
-                $this->_environment => $this->getData()
+                $environment => $this->getData()
             );
         } else {
             return $this->getData();
@@ -72,11 +88,49 @@ class ConfigYaml
     }
 
     /**
+     * @param bool $forced_environment
      * @return string
      */
-    public function toYaml()
+    public function toYaml($forced_environment = false)
     {
         $dumper = new Dumper();
-        return $dumper->dump($this->toArray(), 3);
+        return $dumper->dump($this->toArray($forced_environment), 3);
+    }
+
+    /**
+     * @param $scope
+     * @param $scope_id
+     * @return string
+     */
+    public static function buildScopeKey($scope, $scope_id)
+    {
+        if ($scope == 'default') {
+            return $scope;
+        } else {
+            return sprintf("%s-%s", $scope, $scope_id);
+        }
+    }
+
+    /**
+     * @param $scope_key
+     * @return array
+     */
+    public static function extractFromScopeKey($scope_key)
+    {
+        $scope_key_parts = explode("-", $scope_key);
+        $scope_key_parts_count = count($scope_key_parts);
+
+        if ($scope_key_parts_count == 1) {
+            $scope = $scope_key_parts[0];
+            $scope_id = 0;
+        } else {
+            $scope = join("-", array_slice($scope_key_parts, 0, $scope_key_parts_count - 1));
+            $scope_id = $scope_key_parts[$scope_key_parts_count-1];
+        }
+
+        return array(
+            'scope'    => $scope,
+            'scope_id' => $scope_id
+        );
     }
 }

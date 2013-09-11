@@ -39,9 +39,9 @@ class DumpCommand extends Command
         $magento = new Magento($input->getOption('magento-root'));
         $config_adapter = new ConfigurationAdapter($magento);
 
-        $config_yaml = ConfigYaml::build($config_adapter, $input->getOption('env'));
+        $config_yaml = ConfigYaml::build($config_adapter);
 
-        $output->write($config_yaml->toYaml());
+        $output->write($config_yaml->toYaml($input->getOption('env')));
 
         return 0;
     }

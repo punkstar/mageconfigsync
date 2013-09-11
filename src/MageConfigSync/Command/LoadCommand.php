@@ -63,14 +63,16 @@ class LoadCommand extends Command
             $config_file_contents = $yaml->parse(file_get_contents($config_yaml_file));
             $config_file_yaml = new ConfigYaml($config_file_contents, $input->getOption('env'));
 
-            foreach ($config_file_yaml->getData() as $scope => $scope_data) {
+            foreach ($config_file_yaml->getData() as $scope_key => $scope_data) {
                 foreach ($scope_data as $path => $value) {
-                    $affected_rows = $config_adapter->setValue($path, $value, $scope, 0);
+                    $scope_data = ConfigYaml::extractFromScopeKey($scope_key);
+
+                    $affected_rows = $config_adapter->setValue($path, $value, $scope_data['scope'], $scope_data['scope_id']);
 
                     if ($affected_rows > 0) {
                         $output->getErrorOutput()->writeln(sprintf(
                             "[%s] %s -> %s",
-                            $scope,
+                            $scope_key,
                             $path,
                             $value
                         ));
