@@ -2,6 +2,7 @@
 
 namespace MageConfigSync\Command;
 
+use MageConfigSync\ConfigYaml;
 use MageConfigSync\Magento;
 use MageConfigSync\Magento\ConfigurationAdapter;
 use Symfony\Component\Console\Command\Command;
@@ -37,34 +38,10 @@ class DumpCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $magento = new Magento($input->getOption('magento-root'));
-        $config = new ConfigurationAdapter($magento);
+        $config_adapter = new ConfigurationAdapter($magento);
 
-        $data_structure = array();
+        $config_yaml = ConfigYaml::build($config_adapter, $input->getOption('env'));
 
-        if ($input->getOption('env')) {
-            $env = $input->getOption('env');
-            $data_structure[$env] = array();
-
-            $data_insert_ptr = &$data_structure[$env];
-        } else {
-            $data_insert_ptr = &$data_structure;
-        }
-
-        foreach ($config->getAllValues() as $row) {
-
-            $scope = $row['scope'];
-            $path  = $row['path'];
-            $value = $row['value'];
-
-            if (!isset($data_insert_ptr[$scope])) {
-                $data_insert_ptr[$scope] = array();
-            }
-
-            $data_insert_ptr[$scope][$path] = $value;
-        }
-
-        $dumper = new Dumper();
-
-        $output->write($dumper->dump($data_structure, 3));
+        $output->write($config_yaml->toYaml());
     }
 }
