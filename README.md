@@ -20,6 +20,12 @@ The configuration values are stored in a YAML file.
     
 * Takes an optional argument of `--env` used to describe the current environment of the configuration.
 
+### Load
+
+    php bin/mageconfigsync load --help
+
+* Takes an optional argument of `--env` used to describe the current environment of the configuration.
+
 ### Diff
 
     php bin/mageconfigsync diff --help configuration_file.yaml
