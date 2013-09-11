@@ -2,8 +2,8 @@
 
 namespace MageConfigSync;
 
-use MageConfigSync\Command\DumpCommand;
 use MageConfigSync\Command\DiffCommand;
+use MageConfigSync\Command\DumpCommand;
 
 class Application extends \Symfony\Component\Console\Application
 {
