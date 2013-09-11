@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MageConfigSync" default="test">
+    <target name="test">
+        <exec command="vendor/bin/phpunit" passthru="true" />
+    </target>
+</project>
