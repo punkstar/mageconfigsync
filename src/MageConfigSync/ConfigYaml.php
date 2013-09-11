@@ -49,7 +49,7 @@ class ConfigYaml
         $a_data = $a->getData();
         $b_data = $b->getData();
 
-        return ArrayUtil::diff_assoc_recursive($a_data, $b_data);
+        return ArrayUtil::diffAssocRecursive($a_data, $b_data);
     }
 
     public function getData()
