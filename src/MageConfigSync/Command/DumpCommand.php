@@ -27,8 +27,14 @@ class DumpCommand extends Command
                 'magento-root',
                 null,
                 InputArgument::OPTIONAL,
-                'The Magento root directory, defaults to current working directory',
+                'The Magento root directory, defaults to current working directory.',
                 getcwd()
+            )
+            ->addOption(
+                'env',
+                null,
+                InputArgument::OPTIONAL,
+                'Environment to use in the outputted YAML.  If one is not provided, no environment will be used.'
             )
         ;
     }
@@ -40,20 +46,30 @@ class DumpCommand extends Command
 
         $data_structure = array();
 
+        if ($input->getOption('env')) {
+            $env = $input->getOption('env');
+            $data_structure[$env] = array();
+
+            $data_insert_ptr = &$data_structure[$env];
+        } else {
+            $data_insert_ptr = &$data_structure;
+        }
+
         foreach ($config->getAllValues() as $row) {
 
             $scope = $row['scope'];
             $path  = $row['path'];
             $value = $row['value'];
 
-            if (!isset($data_structure[$scope])) {
-                $data_structure[$scope] = array();
+            if (!isset($data_insert_ptr[$scope])) {
+                $data_insert_ptr[$scope] = array();
             }
 
-            $data_structure[$scope][$path] = $value;
+            $data_insert_ptr[$scope][$path] = $value;
         }
 
         $dumper = new Dumper();
-        echo $dumper->dump($data_structure, 2);
+        
+        echo $dumper->dump($data_structure, 3);
     }
 }
