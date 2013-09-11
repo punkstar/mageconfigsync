@@ -66,15 +66,24 @@ class DiffCommand extends Command
 
             $config_db_yaml = ConfigYaml::build($config_adapter, $input->getOption('db-env'));
 
-            $config_file_data = $yaml->parse(file_get_contents($config_yaml_file));
-            $config_file_yaml = new ConfigYaml($config_file_data, $input->getOption('file-env'));
+            $config_file_contents = $yaml->parse(file_get_contents($config_yaml_file));
+            $config_file_yaml = new ConfigYaml($config_file_contents, $input->getOption('file-env'));
 
             $diff = ConfigYaml::compare($config_file_yaml, $config_db_yaml);
 
             if (count($diff) > 0) {
+                $db_data = $config_db_yaml->getData();
+                $file_data = $config_file_yaml->getData();
+
                 foreach ($diff as $scope => $scope_data) {
                     foreach ($scope_data as $key => $value) {
-                        printf("%s/%s is different\n", $scope, $key);
+                        printf(
+                            "%s/%s is different (File: '%s', DB: '%s')\n",
+                            $scope,
+                            $key,
+                            $file_data[$scope][$key],
+                            $db_data[$scope][$key]
+                        );
                     }
                 }
             }
