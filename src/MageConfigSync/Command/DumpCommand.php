@@ -13,16 +13,11 @@ use Symfony\Component\Yaml\Dumper;
 
 class DumpCommand extends Command
 {
-    public function __construct()
-    {
-        parent::__construct("mage_config_sync");
-    }
-
     protected function configure()
     {
         $this
             ->setName('dump')
-            ->setDescription('Output the current configuration')
+            ->setDescription('Output the current configuration.')
             ->addOption(
                 'magento-root',
                 null,
@@ -69,7 +64,7 @@ class DumpCommand extends Command
         }
 
         $dumper = new Dumper();
-        
-        echo $dumper->dump($data_structure, 3);
+
+        $output->write($dumper->dump($data_structure, 3));
     }
 }
