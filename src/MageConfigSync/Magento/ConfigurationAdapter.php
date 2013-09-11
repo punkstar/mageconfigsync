@@ -3,7 +3,7 @@ namespace MageConfigSync\Magento;
 
 use MageConfigSync\Magento;
 
-class Configuration
+class ConfigurationAdapter
 {
     /**
      * @var Magento

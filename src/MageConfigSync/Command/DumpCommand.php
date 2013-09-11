@@ -3,7 +3,7 @@
 namespace MageConfigSync\Command;
 
 use MageConfigSync\Magento;
-use MageConfigSync\Magento\Configuration;
+use MageConfigSync\Magento\ConfigurationAdapter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,7 +42,7 @@ class DumpCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $magento = new Magento($input->getOption('magento-root'));
-        $config = new Configuration($magento);
+        $config = new ConfigurationAdapter($magento);
 
         $data_structure = array();
 
