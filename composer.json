@@ -1,5 +1,18 @@
 {
+    "name": "punkstar/mageconfigsync",
+    "description": "A utility to aid the storing of Magento configuration in version control.",
+    "license": "MIT",
+    "keywords": ["magento"],
+
+    "authors": [{
+        "name": "Nick Jones",
+        "email": "nick@nicksays.co.uk",
+        "homepage": "http://www.nicksays.co.uk",
+        "role": "Developer"
+    }],
+
     "require": {
+        "php": ">=5.3.0",
         "symfony/console": "v2.3.4",
         "symfony/yaml": "v2.3.4"
     },
@@ -12,5 +25,7 @@
         "psr-0": {
             "MageConfigSync\\": "src/"
         }
-    }
+    },
+
+    "bin": ["bin/mageconfigsync"]
 }
