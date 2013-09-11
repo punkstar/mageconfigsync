@@ -32,16 +32,10 @@ class DiffCommand extends Command
                 getcwd()
             )
             ->addOption(
-                'file-env',
+                'env',
                 null,
                 InputArgument::OPTIONAL,
-                'Environment used in the YAML file.  If one is not provided, no environment will be used.'
-            )
-            ->addOption(
-                'db-env',
-                null,
-                InputArgument::OPTIONAL,
-                'Environment used in the database.  If one is not provided, no environment will be used.'
+                'Environment in the YAML to compare the database to.  If one is not provided, no environment will be used.'
             )
         ;
     }
@@ -64,10 +58,10 @@ class DiffCommand extends Command
                 throw new \Exception("File ($config_yaml_file) is not readable");
             }
 
-            $config_db_yaml = ConfigYaml::build($config_adapter, $input->getOption('db-env'));
+            $config_db_yaml = ConfigYaml::build($config_adapter);
 
             $config_file_contents = $yaml->parse(file_get_contents($config_yaml_file));
-            $config_file_yaml = new ConfigYaml($config_file_contents, $input->getOption('file-env'));
+            $config_file_yaml = new ConfigYaml($config_file_contents, $input->getOption('env'));
 
             $diff = ConfigYaml::compare($config_file_yaml, $config_db_yaml);
 

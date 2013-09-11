@@ -14,25 +14,19 @@ The configuration values are stored in a YAML file.
 
     php bin/mageconfigsync --help
     
- Most commands take an optional argument of `--magento-root` if not running from within a Magento directory.
+ Most commands take an optional argument of `--magento-root` if not running from within a Magento directory and an optional argyment of `--env` used to describe the current environment of the configuration.
 
 ### Dump
 
     php bin/mageconfigsync dump --help
-    
-* Takes an optional argument of `--env` used to describe the current environment of the configuration.
 
 ### Load
 
     php bin/mageconfigsync load --help
 
-* Takes an optional argument of `--env` used to describe the current environment of the configuration.
-
 ### Diff
 
     php bin/mageconfigsync diff --help configuration_file.yaml
-    
-* Takes optional arguments of `--file-env` and `--db-env` used to describe the environments in the yaml file and database.
 
 ## Example Scenario
 
@@ -60,7 +54,7 @@ We can also use this `config.yml` as part of our deployment process.  Consider a
     php bin/mageconfigsync dump --env prod > config.yml.pre-deploy
     
     // Give us a diff for the deployment log so we can see what's about to be changed
-    php bin/mageconfigsync diff --file-env prod --db-env prod config.yml
+    php bin/mageconfigsync diff --file-env prod config.yml
     
     // Sync the latest configuration changes to prod
     php bin/mageconfigsync load --env prod config.yml
