@@ -43,5 +43,7 @@ class DumpCommand extends Command
         $config_yaml = ConfigYaml::build($config_adapter, $input->getOption('env'));
 
         $output->write($config_yaml->toYaml());
+
+        return 0;
     }
 }

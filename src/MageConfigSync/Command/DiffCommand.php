@@ -86,6 +86,10 @@ class DiffCommand extends Command
                         );
                     }
                 }
+
+                return count($diff);
+            } else {
+                return 0;
             }
         }
     }
