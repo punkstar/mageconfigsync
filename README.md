@@ -20,13 +20,19 @@ The configuration values are stored in a YAML file.
 
     php bin/mageconfigsync dump --help
 
+The dump command outputs the current contents of the configuration as YAML to stdout.  Specify `--env` and the environment will be added as the first key, for convenience.
+
 ### Load
 
     php bin/mageconfigsync load --help
 
+The load command synchronises the database with the contents of the file.  Any changed lines will be output to stderr.  The `--env` option will determine which section of the YAML file is loaded.
+
 ### Diff
 
     php bin/mageconfigsync diff --help configuration_file.yaml
+
+The diff command will tell you the difference between the values in the YAML file and the values in the database.  The `--env` option will determine which section of the YAML file is loaded.  A non-zero exit code is the number of differences found.
 
 ## Example Scenario
 
