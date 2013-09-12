@@ -69,10 +69,13 @@ class DiffCommand extends Command
                 $db_data = $config_db_yaml->getData();
                 $file_data = $config_file_yaml->getData();
 
+                $diff_count = 0;
+
                 foreach ($diff as $scope => $scope_data) {
                     foreach ($scope_data as $key => $value) {
-                        printf(
-                            "%s/%s is different (File: '%s', DB: '%s')\n",
+                        $diff_count++;
+                        $output->writeln(
+                            "%s/%s is different (File: '%s', DB: '%s')",
                             $scope,
                             $key,
                             $file_data[$scope][$key],
@@ -81,7 +84,7 @@ class DiffCommand extends Command
                     }
                 }
 
-                return count($diff);
+                return $diff_count;
             } else {
                 return 0;
             }
