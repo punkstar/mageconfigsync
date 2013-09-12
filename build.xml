@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="MageConfigSync" default="test">
-    <target name="test">
-        <exec command="vendor/bin/phpunit" passthru="true" />
+
+    <property name="bin.mage-ci" value="vendor/bin/mage-ci" />
+    <property name="bin.phpunit" value="vendor/bin/phpunit -c ${project.basedir}/phpunit.xml" />
+
+    <property name="magento.version" value="1.7.0.2" />
+    <property name="magento.base_dir" value="${project.basedir}/magento" />
+    <property name="magento.base_url" value="http://dev/null/" />
+
+    <property name="db.name" value="mageconfigtest" />
+    <property name="db.user" value="root" />
+    <property name="db.pass" value="toor" />
+
+    <target name="test" depends="test-unit,test-integration" />
+
+    <target name="test-unit">
+        <exec command="${bin.phpunit} --exclude-group integration" passthru="true" />    	
+    </target>
+
+    <target name="test-integration" depends="install-magento">
+        <exec command="${bin.phpunit} --group integration" passthru="true" />       
+    </target>
+
+    <target name="install-magento">
+        <if>
+            <not><available type="dir" file="${magento.base_dir}" /></not>
+            <then>
+    	       <exec command="${bin.mage-ci} install ${magento.base_dir} ${magento.version} ${db.name} -c -t -u ${db.user} -p ${db.pass} -b ${magento.base_url}" passthru="true" checkreturn="true" />
+            </then>
+            <else>
+                <echo message="Magento is already installed in ${magento.base_dir}. Skipping.." />
+            </else>
+        </if>
     </target>
 </project>
