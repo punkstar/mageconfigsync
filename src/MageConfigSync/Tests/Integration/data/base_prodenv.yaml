@@ -1,0 +1,14 @@
+prod:
+    default:
+        web/seo/use_rewrites: '1'
+        admin/dashboard/enable_charts: '0'
+        web/unsecure/base_url: 'http://dev/null/'
+        web/secure/base_url: 'http://dev/null/'
+        general/locale/code: en_US
+        general/locale/timezone: America/Los_Angeles
+        currency/options/base: USD
+        currency/options/default: USD
+        currency/options/allow: USD
+        general/region/display_all: '1'
+        general/region/state_required: 'AT,CA,CH,DE,EE,ES,FI,FR,LT,LV,RO,US'
+        catalog/category/root_id: '2'
