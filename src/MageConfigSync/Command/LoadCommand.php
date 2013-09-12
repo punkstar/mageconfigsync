@@ -70,12 +70,18 @@ class LoadCommand extends Command
                     $affected_rows = $config_adapter->setValue($path, $value, $scope_data['scope'], $scope_data['scope_id']);
 
                     if ($affected_rows > 0) {
-                        $output->getErrorOutput()->writeln(sprintf(
+                        $line = sprintf(
                             "[%s] %s -> %s",
                             $scope_key,
                             $path,
                             $value
-                        ));
+                        );
+
+                        if (method_exists($output, 'getErrorOutput')) {
+                            $output->getErrorOutput()->writeln($line);
+                        } else {
+                            $output->writeln($line);
+                        }
                     }
                 }
             }
