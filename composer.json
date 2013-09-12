@@ -18,7 +18,8 @@
     },
 
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "3.7.*",
+        "ecomdev/mage-ci": "master@dev"
     },
 
     "autoload": {
@@ -27,5 +28,10 @@
         }
     },
 
-    "bin": ["bin/mageconfigsync"]
+    "bin": ["bin/mageconfigsync"],
+
+    "repositories": [{
+        "type": "vcs",
+        "url": "https://github.com/punkstar/MageCI.git"
+    }]
 }

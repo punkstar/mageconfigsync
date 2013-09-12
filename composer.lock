@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "747baafa734428f509910e43da8f25ae",
+    "hash": "ee760707fed5c15349a812a9ef3e353a",
     "packages": [
         {
             "name": "symfony/console",
@@ -107,6 +107,42 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "ecomdev/mage-ci",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/punkstar/MageCI.git",
+                "reference": "82a7a96e89cb5131fd03f3cff4e02bc08e9daefd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/punkstar/MageCI/zipball/82a7a96e89cb5131fd03f3cff4e02bc08e9daefd",
+                "reference": "82a7a96e89cb5131fd03f3cff4e02bc08e9daefd",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/mage-ci"
+            ],
+            "type": "library",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Chepurnyi",
+                    "email": "ivan.chepurnyi@ecomdev.org",
+                    "homepage": "http://www.ecomdev.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Magento Continuous Integration Tools",
+            "homepage": "https://github.com/EcomDev/MageCI",
+            "support": {
+                "source": "https://github.com/punkstar/MageCI/tree/master"
+            },
+            "time": "2013-09-09 14:04:22"
+        },
         {
             "name": "phpunit/php-code-coverage",
             "version": "1.2.13",
@@ -479,12 +515,12 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
-    "platform": [
-
-    ],
+    "stability-flags": {
+        "ecomdev/mage-ci": 20
+    },
+    "platform": {
+        "php": ">=5.3.0"
+    },
     "platform-dev": [
 
     ]
