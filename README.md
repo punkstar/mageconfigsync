@@ -1,4 +1,4 @@
-# Mage Config Sync
+# Magento Configuration Sync
 
 This is a tool designed to allow teams to keep Magento configuration under version control, eliminating the unknown when tracking down potentially configuration related bugs.
 
