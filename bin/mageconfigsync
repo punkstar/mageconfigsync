@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoload_file = __DIR__ . '/../vendor/autoload.php';
+
+if (!file_exists($autoload_file)) {
+    trigger_error("Unable to load composer autoload.php at '$autoload_file'. Have you run 'composer install'?", E_USER_ERROR);
+}
+
+require_once $autoload_file;
 
 $application = new MageConfigSync\Application();
 $application->run();
