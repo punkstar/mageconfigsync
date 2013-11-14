@@ -2,7 +2,7 @@
 <?php
 $autoload_files = array(
     __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../vendor/autoload.php'
+    __DIR__ . '/../../../../vendor/autoload.php'
 );
 
 foreach ($autoload_files as $autoload_file) {
