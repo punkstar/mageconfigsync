@@ -74,13 +74,14 @@ class DiffCommand extends Command
                 foreach ($diff as $scope => $scope_data) {
                     foreach ($scope_data as $key => $value) {
                         $diff_count++;
-                        $output->writeln(
+                        $diff_message = sprintf(
                             "%s/%s is different (File: '%s', DB: '%s')",
                             $scope,
                             $key,
                             $file_data[$scope][$key],
                             $db_data[$scope][$key]
                         );
+                        $output->writeln($diff_message);
                     }
                 }
 
