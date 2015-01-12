@@ -1,0 +1,28 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+env:
+  - MAGENTO_VERSION=1.7.0.2
+  - MAGENTO_VERSION=1.8.1.0
+  - MAGENTO_VERSION=1.9.0.1
+matrix:
+  allow_failures:
+    - php: 5.6
+    - php: hhvm
+before_script:
+  - mysql -uroot -e "CREATE USER 'mageconfigsync'@'localhost' IDENTIFIED BY 'mageconfigsync';"
+  - mysql -uroot -e "GRANT ALL ON mageconfigsync.* TO 'mageconfigsync'@'localhost';"
+  - mysql -uroot -e "GRANT ALL ON mageconfigsync_test.* TO 'mageconfigsync'@'localhost';"
+  - mysql -uroot -e "FLUSH PRIVILEGES;"
+  - composer selfupdate
+  - composer install --dev --no-interaction
+  - wget http://www.phing.info/get/phing-latest.phar
+  - mv phing-latest.phar phing.phar
+  - chmod +x phing.phar
+
+script:
+  - php phing.phar -Ddb.pass='mageconfigsync' -Ddb.user='mageconfigsync' -Ddb.name='mageconfigsync' -Dmagento.version=$MAGENTO_VERSION test
