@@ -74,7 +74,7 @@ class LoadCommand extends Command
                             "[%s] %s -> %s",
                             $scope_key,
                             $path,
-                            $value
+                            $value ?: 'null'
                         );
 
                         if (method_exists($output, 'getErrorOutput')) {
