@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="MageConfigSync" default="test">
 
+    <property name="bin.phar-composer" value="vendor/bin/phar-composer" />
     <property name="bin.mage-ci" value="vendor/bin/mage-ci" />
     <property name="bin.phpunit" value="vendor/bin/phpunit -c ${project.basedir}/phpunit.xml" />
+    <property name="dir.build" value="${project.basedir}/build/" />
 
     <property name="magento.version" value="1.7.0.2" />
     <property name="magento.base_dir" value="${project.basedir}/magento" />
@@ -14,15 +16,15 @@
 
     <target name="test" depends="test-unit,test-integration" />
 
-    <target name="test-unit">
+    <target name="test-unit" depends="install-deps">
         <exec command="${bin.phpunit} --exclude-group integration" passthru="true" />    	
     </target>
 
-    <target name="test-integration" depends="install-magento">
+    <target name="test-integration" depends="install-magento,install-deps">
         <exec command="${bin.phpunit} --group integration" passthru="true" />       
     </target>
 
-    <target name="install-magento">
+    <target name="install-magento" depends="install-deps">
         <if>
             <not><available type="dir" file="${magento.base_dir}" /></not>
             <then>
@@ -32,5 +34,14 @@
                 <echo message="Magento is already installed in ${magento.base_dir}. Skipping.." />
             </else>
         </if>
+    </target>
+
+    <target name="build" depends="install-deps">
+        <mkdir dir="${dir.build}" />
+        <exec command="${bin.phar-composer} build ${project.basedir} ${dir.build}" passthru="true" />
+    </target>
+
+    <target name="install-deps">
+        <exec command="composer install" />
     </target>
 </project>
