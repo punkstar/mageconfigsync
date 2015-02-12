@@ -75,11 +75,11 @@ class DiffCommand extends Command
                     foreach ($scope_data as $key => $value) {
                         $diff_count++;
                         $diff_message = sprintf(
-                            "%s/%s is different (File: '%s', DB: '%s')",
+                            "%s/%s is different (File: %s, DB: %s)",
                             $scope,
                             $key,
-                            $file_data[$scope][$key],
-                            $db_data[$scope][$key]
+                            $this->decorateValue($file_data[$scope][$key]),
+                            $this->decorateValue($db_data[$scope][$key])
                         );
                         $output->writeln($diff_message);
                     }
@@ -89,6 +89,15 @@ class DiffCommand extends Command
             } else {
                 return 0;
             }
+        }
+    }
+    
+    protected function decorateValue($value)
+    {
+        if (is_null($value)) {
+            return 'null';
+        } else {
+            return "'{$value}'";
         }
     }
 }

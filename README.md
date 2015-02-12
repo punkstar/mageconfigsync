@@ -22,8 +22,14 @@ For example:
             dev/debug/template_hints: 1
         stores-1:
             currency/options/base: GBP
+            dev/restrict/allow_ips: null
 
-The above will disable template hints on product, enable template hints on the development environment and set the currency to Pounds Sterling in the store scope for the store with ID #1.
+The above will:
+
+* disable template hints on product;
+* enable template hints on the development environment;
+* set the currency to Pounds Sterling in the store scope for the store with ID #1;
+* ensure the allowed development ip's are inherited from the website for store #1.
 
 Valid scope keys are:
 
