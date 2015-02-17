@@ -45,6 +45,21 @@ class DiffIntegrationTest extends \PHPUnit_Framework_TestCase {
      * @test
      * @group integration
      */
+    public function testNodiffNoenvIntegerComparison()
+    {
+        $this->_commandTester->execute(array(
+            'command'          => $this->_commandName,
+            '--magento-root'   => $this->_magentoRoot,
+            'config-yaml-file' => __DIR__ . "/data/base_noenv_integers.yaml"
+        ));
+
+        $this->assertEmpty($this->_commandTester->getDisplay());
+    }
+
+    /**
+     * @test
+     * @group integration
+     */
     public function testNodiffWithEnv()
     {
         $this->_commandTester->execute(array(
