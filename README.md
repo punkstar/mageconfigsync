@@ -81,7 +81,7 @@ We can also use this `config.yml` as part of our deployment process.  Consider a
     php bin/mageconfigsync dump --env prod > config.yml.pre-deploy
     
     // Give us a diff for the deployment log so we can see what's about to be changed
-    php bin/mageconfigsync diff --file-env prod config.yml
+    php bin/mageconfigsync diff --env prod config.yml
     
     // Sync the latest configuration changes to prod
     php bin/mageconfigsync load --env prod config.yml
