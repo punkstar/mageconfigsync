@@ -45,6 +45,26 @@ class ConfigurationAdapter
 
     /**
      * @param $path
+     * @param $scope
+     * @param $scope_id
+     *
+     * @return int Number of affected rows
+     */
+    public function deleteValue($path, $scope, $scope_id)
+    {
+        $write = $this->_magento->getDatabaseWriteConnection();
+        return $write->delete(
+            $this->_table_name,
+            array(
+                'scope = ?'    => $scope,
+                'scope_id = ?' => $scope_id,
+                'path = ?'     => $path
+            )
+        );
+    }
+
+    /**
+     * @param $path
      * @return array
      */
     public function getValue($path)
