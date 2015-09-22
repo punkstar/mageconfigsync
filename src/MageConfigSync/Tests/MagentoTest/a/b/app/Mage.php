@@ -1,1 +1,1 @@
-<?php /* This file is deliberatly empty. */
+<?php /* This file is deliberately empty. */

@@ -67,14 +67,18 @@ class LoadCommand extends Command
                 foreach ($scope_data as $path => $value) {
                     $scope_data = ConfigYaml::extractFromScopeKey($scope_key);
 
-                    $affected_rows = $config_adapter->setValue($path, $value, $scope_data['scope'], $scope_data['scope_id']);
+                    if ($value !== null) {
+                        $affected_rows = $config_adapter->setValue($path, $value, $scope_data['scope'], $scope_data['scope_id']);
+                    } else {
+                        $affected_rows = $config_adapter->deleteValue($path, $scope_data['scope'], $scope_data['scope_id']);
+                    }
 
                     if ($affected_rows > 0) {
                         $line = sprintf(
                             "[%s] %s -> %s",
                             $scope_key,
                             $path,
-                            $value
+                            $value ?: 'null'
                         );
 
                         if (method_exists($output, 'getErrorOutput')) {
