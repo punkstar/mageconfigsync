@@ -58,6 +58,12 @@ The load command synchronises the database with the contents of the file.  Any c
 ### Diff
 
     php bin/mageconfigsync diff --help configuration_file.yaml
+    
+### Magento 2 Support
+
+Any of the commands above can be used with Magento 2, all you need to do it define a `--magento2` flag, for example:
+
+    php bin/mageconfigsync dump --magento2
 
 The diff command will tell you the difference between the values in the YAML file and the values in the database.  The `--env` option will determine which section of the YAML file is loaded.  A non-zero exit code is the number of differences found.
 
