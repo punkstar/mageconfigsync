@@ -2,7 +2,7 @@
 
 namespace MageConfigSync;
 
-use MageConfigSync\Magento\ConfigurationAdapter;
+use MageConfigSync\Api\ConfigurationAdapterInterface;
 use MageConfigSync\Util\ArrayUtil;
 use Symfony\Component\Yaml\Dumper;
 
@@ -15,11 +15,11 @@ class ConfigYaml
     }
 
     /**
-     * @param ConfigurationAdapter $config_adapter
+     * @param ConfigurationAdapterInterface $config_adapter
      * @param bool $environment
      * @return ConfigYaml
      */
-    public static function build(ConfigurationAdapter $config_adapter, $environment = false)
+    public static function build(ConfigurationAdapterInterface $config_adapter, $environment = false)
     {
         $data_structure = array();
 
