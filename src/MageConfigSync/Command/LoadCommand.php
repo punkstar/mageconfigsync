@@ -3,6 +3,7 @@
 namespace MageConfigSync\Command;
 
 use MageConfigSync\ConfigYaml;
+use MageConfigSync\Factory\ConfigurationAdapterFactory;
 use MageConfigSync\Magento;
 use MageConfigSync\Magento\ConfigurationAdapter;
 use Symfony\Component\Console\Command\Command;
@@ -37,15 +38,19 @@ class LoadCommand extends Command
                 InputArgument::OPTIONAL,
                 'Environment to import.  If one is not provided, no environment will be used.'
             )
-        ;
+            ->addOption(
+                'magento2',
+                null,
+                InputOption::VALUE_NONE,
+                'If your environment is Magento 2, add this flag.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var \Symfony\Component\Console\Output\ConsoleOutput $output */
 
-        $magento = new Magento($input->getOption('magento-root'));
-        $config_adapter = new ConfigurationAdapter($magento);
+        $config_adapter = ConfigurationAdapterFactory::create($input);
 
         $yaml = new Parser();
 

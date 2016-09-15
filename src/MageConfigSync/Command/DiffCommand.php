@@ -3,6 +3,7 @@
 namespace MageConfigSync\Command;
 
 use MageConfigSync\ConfigYaml;
+use MageConfigSync\Factory\ConfigurationAdapterFactory;
 use MageConfigSync\Magento;
 use MageConfigSync\Magento\ConfigurationAdapter;
 use Symfony\Component\Console\Command\Command;
@@ -37,13 +38,17 @@ class DiffCommand extends Command
                 InputArgument::OPTIONAL,
                 'Environment in the YAML to compare the database to.  If one is not provided, no environment will be used.'
             )
-        ;
+            ->addOption(
+                'magento2',
+                null,
+                InputOption::VALUE_NONE,
+                'If your environment is Magento 2, add this flag.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $magento = new Magento($input->getOption('magento-root'));
-        $config_adapter = new ConfigurationAdapter($magento);
+        $config_adapter = ConfigurationAdapterFactory::create($input);
 
         $yaml = new Parser();
 
@@ -74,12 +79,28 @@ class DiffCommand extends Command
                 foreach ($diff as $scope => $scope_data) {
                     foreach ($scope_data as $key => $value) {
                         $diff_count++;
+
+                        /**
+                         * If the values don't exist in the file or the database
+                         * they will not be set in the array. this will cause an
+                         * error if not handled properly.
+                         */
+                        $file_value = null;
+                        if(isset($file_data[$scope][$key])) {
+                            $file_value = $file_data[$scope][$key];
+                        }
+
+                        $db_value = null;
+                        if(isset($db_data[$scope][$key])) {
+                            $db_value = $db_data[$scope][$key];
+                        }
+
                         $diff_message = sprintf(
                             "%s/%s is different (File: %s, DB: %s)",
                             $scope,
                             $key,
-                            $this->decorateValue($file_data[$scope][$key]),
-                            $this->decorateValue($db_data[$scope][$key])
+                            $this->decorateValue($file_value),
+                            $this->decorateValue($db_value)
                         );
                         $output->writeln($diff_message);
                     }
