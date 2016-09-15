@@ -29,18 +29,12 @@ class DumpCommand extends Command
                 null,
                 InputArgument::OPTIONAL,
                 'Environment to use in the outputted YAML.  If one is not provided, no environment will be used.'
-            )
-            ->addOption(
-                'magento2',
-                null,
-                InputOption::VALUE_NONE,
-                'If your environment is Magento 2, add this flag.'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config_adapter = ConfigurationAdapterFactory::create($input);
+        $config_adapter = ConfigurationAdapterFactory::create($input->getOption('magento-root'));
         $config_yaml = ConfigYaml::build($config_adapter);
 
         $output->write($config_yaml->toYaml($input->getOption('env')));

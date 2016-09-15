@@ -2,13 +2,21 @@
 
 namespace MageConfigSync;
 
-class Magento2
+use MageConfigSync\Api\InstallationDetectorInterface;
+use MageConfigSync\Exception\InstallationNotFound;
+
+class Magento2 implements InstallationDetectorInterface
 {
 
     /**
      * @var string
      */
     protected $_magentoRootDir;
+
+    /**
+     * @var string
+     */
+    protected $_magentoBootstrapFile;
 
     /**
      * @var \Magento\Framework\App\Http|null
@@ -46,6 +54,15 @@ class Magento2
     public function __construct($directory)
     {
         $this->_magentoRootDir = $this->findMagentoRootDir($directory);
+        $this->_magentoBootstrapFile = $this->_magentoRootDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'bootstrap.php';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInstallationDetected()
+    {
+        return file_exists($this->_magentoBootstrapFile);
     }
 
     /**
@@ -122,7 +139,7 @@ class Magento2
             array_pop($directory_tree);
         }
 
-        throw new \Exception("Unable to locate Magento 2 root");
+        throw new InstallationNotFound("Unable to locate Magento 2 root");
     }
 
     /**

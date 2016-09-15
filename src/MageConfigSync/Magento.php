@@ -2,9 +2,17 @@
 
 namespace MageConfigSync;
 
-class Magento
+use MageConfigSync\Exception\InstallationNotFound;
+use MageConfigSync\Api\InstallationDetectorInterface;
+
+class Magento implements InstallationDetectorInterface
 {
     protected $_magentoRootDir;
+
+    /**
+     * @var string
+     */
+    protected $_magentoBoostrapFile;
 
     /**
      * @param string $directory
@@ -12,6 +20,15 @@ class Magento
     public function __construct($directory)
     {
         $this->_magentoRootDir = $this->findMagentoRootDir($directory);
+        $this->_magentoBoostrapFile = $this->_magentoRootDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Mage.php';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInstallationDetected()
+    {
+        return file_exists($this->_magentoBoostrapFile);
     }
 
     /**
@@ -20,8 +37,7 @@ class Magento
     public function getMagentoEnvironment()
     {
         if (!class_exists('Mage')) {
-            $mage_filename = $this->_magentoRootDir . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Mage.php';
-            require_once $mage_filename;
+            require_once $this->_magentoBoostrapFile;
         }
 
         return \Mage::app();
@@ -79,6 +95,6 @@ class Magento
             array_pop($directory_tree);
         }
 
-        throw new \Exception("Unable to locate Magento root");
+        throw new InstallationNotFound("Unable to locate Magento root");
     }
 }

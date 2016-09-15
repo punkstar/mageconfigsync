@@ -3,6 +3,7 @@
 namespace MageConfigSync\Factory;
 
 use MageConfigSync\Api\ConfigurationAdapterInterface;
+use MageConfigSync\Exception\InstallationNotFound;
 use MageConfigSync\Magento;
 use MageConfigSync\Magento2;
 use MageConfigSync\Magento2\ConfigurationAdapter as Magento2Configuration;
@@ -13,39 +14,74 @@ class ConfigurationAdapterFactory
 {
 
     /**
-     * @param InputInterface $input
-     *
-     * @return ConfigurationAdapterInterface
+     * @param $rootDir
+     * @return Magento2Configuration|MagentoConfiguration
+     * @throws \Exception
      */
-    static public function create(InputInterface $input)
+    static public function create($rootDir)
     {
-        if ($input->getOption('magento2')) {
-            return static::createMagento2Configuration($input->getOption('magento-root'));
-        }
+        try {
+            $magentoAdapter = self::createMagentoAdapter($rootDir);
 
-        return static::createMagentoConfiguration($input->getOption('magento-root'));
+            if ($magentoAdapter->isInstallationDetected()) {
+                return self::createMagentoConfiguration($magentoAdapter);
+            }
+        } catch (InstallationNotFound $e) {}
+
+        try {
+            $magento2Adapter = self::createMagento2Adapter($rootDir);
+
+            if ($magento2Adapter->isInstallationDetected()) {
+                return static::createMagento2Configuration($magento2Adapter);
+            }
+        } catch (InstallationNotFound $e) {}
+
+        throw new \Exception("Unable to detect Magento version from provided root directory ($rootDir)");
     }
 
     /**
-     * @param $magento2_root
-     *
+     * @param Magento2|null $adapter
+     * @param null $rootDir
      * @return Magento2Configuration
      */
-    static public function createMagento2Configuration($magento2_root)
+    static public function createMagento2Configuration(Magento2 $adapter = null, $rootDir = null)
     {
-        $magento2 = new Magento2($magento2_root);
-        return new Magento2Configuration($magento2);
+        if ($adapter == null) {
+            $adapter = self::createMagento2Adapter($rootDir);
+        }
+
+        return new Magento2Configuration($adapter);
     }
 
     /**
-     * @param $magento_root
-     *
+     * @param Magento|null $adapter
+     * @param null $rootDir
      * @return MagentoConfiguration
      */
-    static public function createMagentoConfiguration($magento_root)
+    static public function createMagentoConfiguration(Magento $adapter = null, $rootDir = null)
     {
-        $magento = new Magento($magento_root);
-        return new MagentoConfiguration($magento);
+        if ($adapter == null) {
+            $adapter = self::createMagentoAdapter($rootDir);
+        }
+
+        return new MagentoConfiguration($adapter);
     }
 
+    /**
+     * @param $rootDir
+     * @return Magento
+     */
+    static protected function createMagentoAdapter($rootDir)
+    {
+        return new Magento($rootDir);
+    }
+
+    /**
+     * @param $rootDir
+     * @return Magento2
+     */
+    static protected function createMagento2Adapter($rootDir)
+    {
+        return new Magento2($rootDir);
+    }
 }

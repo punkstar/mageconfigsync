@@ -37,18 +37,12 @@ class DiffCommand extends Command
                 null,
                 InputArgument::OPTIONAL,
                 'Environment in the YAML to compare the database to.  If one is not provided, no environment will be used.'
-            )
-            ->addOption(
-                'magento2',
-                null,
-                InputOption::VALUE_NONE,
-                'If your environment is Magento 2, add this flag.'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config_adapter = ConfigurationAdapterFactory::create($input);
+        $config_adapter = ConfigurationAdapterFactory::create($input->getOption('magento-root'));
 
         $yaml = new Parser();
 

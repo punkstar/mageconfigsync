@@ -17,7 +17,7 @@ class Magento2Test extends \PHPUnit_Framework_TestCase
         $dir_prefix = __DIR__ . "/../MagentoTest";
         $this->assertFileExists("$dir_prefix/a/b/app/bootstrap.php");
 
-        $this->assertInstanceOf(Magento2Configuration::class, ConfigurationAdapterFactory::createMagento2Configuration("$dir_prefix/a/b/app/bootstrap.php"));
+        $this->assertInstanceOf(Magento2Configuration::class, ConfigurationAdapterFactory::createMagento2Configuration(null, "$dir_prefix/a/b/app/bootstrap.php"));
     }
 
     /**
