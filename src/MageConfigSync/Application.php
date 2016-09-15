@@ -10,7 +10,7 @@ class Application extends \Symfony\Component\Console\Application
 {
     public function __construct()
     {
-        parent::__construct("mageconfigsync", "0.4.0");
+        parent::__construct("mageconfigsync", "0.5.0-beta");
 
         $this->add(new DumpCommand());
         $this->add(new DiffCommand());
