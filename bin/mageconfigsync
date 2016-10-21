@@ -2,6 +2,7 @@
 <?php
 $autoload_files = array(
     __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../../app/autoload.php',
     __DIR__ . '/../../../../vendor/autoload.php'
 );
 
