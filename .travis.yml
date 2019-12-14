@@ -8,7 +8,7 @@ php:
 env:
   - MAGENTO_VERSION=1.7.0.2
   - MAGENTO_VERSION=1.8.1.0
-  - MAGENTO_VERSION=1.9.0.1
+  - MAGENTO_VERSION=1.9.2.4
 matrix:
   allow_failures:
     - php: 5.6

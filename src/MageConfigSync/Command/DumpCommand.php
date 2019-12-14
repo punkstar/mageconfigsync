@@ -3,8 +3,7 @@
 namespace MageConfigSync\Command;
 
 use MageConfigSync\ConfigYaml;
-use MageConfigSync\Magento;
-use MageConfigSync\Magento\ConfigurationAdapter;
+use MageConfigSync\Factory\ConfigurationAdapterFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,15 +29,12 @@ class DumpCommand extends Command
                 null,
                 InputArgument::OPTIONAL,
                 'Environment to use in the outputted YAML.  If one is not provided, no environment will be used.'
-            )
-        ;
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $magento = new Magento($input->getOption('magento-root'));
-        $config_adapter = new ConfigurationAdapter($magento);
-
+        $config_adapter = ConfigurationAdapterFactory::create($input->getOption('magento-root'));
         $config_yaml = ConfigYaml::build($config_adapter);
 
         $output->write($config_yaml->toYaml($input->getOption('env')));

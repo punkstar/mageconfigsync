@@ -1,6 +1,6 @@
 # Magento Configuration Sync
 
-This is a tool designed to allow teams to keep Magento configuration under version control, eliminating the unknown when tracking down potentially configuration related bugs.
+This is a tool designed to allow teams to keep Magento (1.x and 2.x supported) configuration under version control, eliminating the unknown when tracking down potentially configuration related bugs.
 
 ![image](http://up.nicksays.co.uk/image/3J3n461U1E35/Screen%20Shot%202013-09-11%20at%2018.47.10.png)
 
@@ -58,8 +58,6 @@ The load command synchronises the database with the contents of the file.  Any c
 ### Diff
 
     php bin/mageconfigsync diff --help configuration_file.yaml
-
-The diff command will tell you the difference between the values in the YAML file and the values in the database.  The `--env` option will determine which section of the YAML file is loaded.  A non-zero exit code is the number of differences found.
 
 ## Example Scenario
 

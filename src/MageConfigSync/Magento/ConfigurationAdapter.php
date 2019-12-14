@@ -1,9 +1,10 @@
 <?php
 namespace MageConfigSync\Magento;
 
+use MageConfigSync\Api\ConfigurationAdapterInterface;
 use MageConfigSync\Magento;
 
-class ConfigurationAdapter
+class ConfigurationAdapter implements ConfigurationAdapterInterface
 {
     /**
      * @var Magento
